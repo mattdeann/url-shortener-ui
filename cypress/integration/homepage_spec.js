@@ -26,7 +26,6 @@ describe('homepage', () => {
         
         cy.get('.url-title').should('have.text', 'Awesome photo')
         cy.get('.short-url').should('have.attr', 'href', 'http://localhost:3001/useshorturl/1')
-        cy.get('.short-url').should('have.text', 'http://localhost:3001/useshorturl/1')
         cy.get('.long-url').should('have.text', 'https://images.unsplash.com/photo-1531898418865-480b7090470f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')
 
       })
@@ -65,6 +64,14 @@ describe('homepage', () => {
         cy.get('.form-title').type('mock post')
         cy.get('.form-long-url').type('mockpost.com/mockitup')
         cy.get('.form-button').click()
+      })
+      .get('.url').should('have.length', 3)
+      .get('.url').eq(2).within(() => {
+        
+        cy.get('.url-title').should('have.text', 'mock post')
+        cy.get('.short-url').should('have.attr', 'href', 'http://localhost:3001/useshorturl/4')
+        cy.get('.long-url').should('have.text', 'mockpost.com/mockitup')
+
       })
   })
 })
