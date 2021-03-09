@@ -3,7 +3,7 @@ export const getUrls = () => {
       .then(response => response.json())
 }
 
-export const postUrl = (longUrl, title) => {
+export const postUrl = (title, longUrl) => {
   const requestOptions = {
     method: 'POST',
     headers: {
