@@ -20,6 +20,7 @@ export class App extends Component {
   }
 
   pushNewUrl = (urlObject) => {
+    console.log(urlObject)
     this.setState((prevState) => ({
       urls: [...prevState.urls, urlObject]
     }))

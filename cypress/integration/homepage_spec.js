@@ -1,15 +1,15 @@
 describe('homepage', () => {
   beforeEach(() => {
-    cy.fixture("mockUrls.json")
+    cy.fixture("mockPost.json")
       .then((response) => {
-        cy.intercept("http://localhost:3001/api/v1/urls", {
+        cy.intercept("POST", "http://localhost:3001/api/v1/urls", {
           statusCode: 200,
           body: response
         })
       })
-    cy.fixture("mockPost.json")
+    cy.fixture("mockUrls.json")
       .then((response) => {
-        cy.intercept("POST", "http://localhost:3001/api/v1/urls", {
+        cy.intercept("http://localhost:3001/api/v1/urls", {
           statusCode: 200,
           body: response
         })
@@ -45,6 +45,26 @@ describe('homepage', () => {
         cy.get('.form-long-url').should('have.attr', 'name', 'urlToShorten')
 
         cy.get('.form-button').should('have.text', 'Shorten Please!')
+      })
+  })
+
+  it('should allow user input in the form', () => {
+    cy.visit('http://localhost:3000/')
+    cy
+      .get('.url-form').within(() => {
+        cy.get('.form-title').type('fo real').should('have.attr', 'value', 'fo real')
+        cy.get('.form-long-url').type('http://www.superfastcars.com').should('have.attr', 'value', 'http://www.superfastcars.com')
+        
+      })
+  })
+
+  it('should allow POST calls from the form, and update the DOM accordingly', () => {
+    cy.visit('http://localhost:3000/')
+    cy
+      .get('.url-form').within(() => {
+        cy.get('.form-title').type('mock post')
+        cy.get('.form-long-url').type('mockpost.com/mockitup')
+        cy.get('.form-button').click()
       })
   })
 })
