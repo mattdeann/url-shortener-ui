@@ -43,6 +43,8 @@ describe('homepage', () => {
         cy.get('.form-long-url').should('have.attr', 'type', 'text')
         cy.get('.form-long-url').should('have.attr', 'placeholder', 'URL to Shorten...')
         cy.get('.form-long-url').should('have.attr', 'name', 'urlToShorten')
+
+        cy.get('.form-button').should('have.text', 'Shorten Please!')
       })
   })
 })
