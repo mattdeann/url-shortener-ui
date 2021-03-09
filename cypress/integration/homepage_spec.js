@@ -1,43 +1,49 @@
-describe('Loading and Error Component', () => {
+describe('homepage', () => {
   beforeEach(() => {
-    cy.fixture("mockUpcoming.json")
+    cy.fixture("mockUrls.json")
       .then((response) => {
-        cy.intercept("https://ll.thespacedevs.com/2.0.0/launch/upcoming", {
+        cy.intercept("http://localhost:3001/api/v1/urls", {
           statusCode: 200,
-          delay: 3000,
           body: response
         })
       })
-    cy.fixture("mockRecent.json")
+    cy.fixture("mockPost.json")
       .then((response) => {
-        cy.intercept("https://ll.thespacedevs.com/2.0.0/launch/previous", {
+        cy.intercept("POST", "http://localhost:3001/api/v1/urls", {
           statusCode: 200,
-          delay: 3000,
           body: response
         })
       })
     cy.visit('http://localhost:3000/rocket-docket/')
   })
 
-  it('should show the header and error component if a bad path is entered, and allow the user to return to home', () => {
-    cy.visit('http://localhost:3000/rocket-docket/some-bad-path')
+  it('should show the page title and existing urls', () => {
+    cy.visit('http://localhost:3000/')
     cy
-      .get('.site-title').should('have.text', 'Rocket Docket')
-      .get('.tagline').should('have.text', 'A docket of upcoming rocket launches.')
-    cy
-      .get('.error-logo').should('have.attr', 'src', '/static/media/rocket-docket-logo.741c2a33.png')
-      .get('.error-message').should('have.text', 'Oops! An error with message"404 Page not found"has occured.')
-      .get('.error-back-button').should('have.text', 'Back to Home').click()
-      cy.url().should('eq', 'http://localhost:3000/rocket-docket')
+      .get('.site-title').should('have.text', 'URL Shortener')
+      .get('.url').should('have.length', 2)
+      .get('.url').first().within(() => {
+        
+        cy.get('.url-title').should('have.text', 'Awesome photo')
+        cy.get('.short-url').should('have.attr', 'href', 'http://localhost:3001/useshorturl/1')
+        cy.get('.short-url').should('have.text', 'http://localhost:3001/useshorturl/1')
+        cy.get('.long-url').should('have.text', 'https://images.unsplash.com/photo-1531898418865-480b7090470f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')
+
+      })
   })
 
-  it('should display the header and a loading component while waiting for fetch response', () => {
-    cy.visit('http://localhost:3000/rocket-docket/')
+  it('should show the form and inputs', () => {
+    cy.visit('http://localhost:3000/')
     cy
-      .get('.site-title').should('have.text', 'Rocket Docket')
-      .get('.tagline').should('have.text', 'A docket of upcoming rocket launches.')
-    cy
-      .get('.loading-screen').should('have.text', 'Loading...')
-      .get('.loading-image').should('have.attr', 'src', '/static/media/rocket-docket-logo.741c2a33.png')
+      .get('.site-title').should('have.text', 'URL Shortener')
+      .get('.url').should('have.length', 2)
+      .get('.url').first().within(() => {
+        
+        cy.get('.url-title').should('have.text', 'Awesome photo')
+        cy.get('.short-url').should('have.attr', 'href', 'http://localhost:3001/useshorturl/1')
+        cy.get('.short-url').should('have.text', 'http://localhost:3001/useshorturl/1')
+        cy.get('.long-url').should('have.text', 'https://images.unsplash.com/photo-1531898418865-480b7090470f?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=934&q=80')
+
+      })
   })
 })
