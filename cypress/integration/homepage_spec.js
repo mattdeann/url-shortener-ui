@@ -1,5 +1,9 @@
 describe('homepage', () => {
   beforeEach(() => {
+    cy.intercept("DELETE", "http://localhost:3001/api/v1/urls", {
+        statusCode: 204
+      })
+
     cy.fixture("mockPost.json")
       .then((response) => {
         cy.intercept("POST", "http://localhost:3001/api/v1/urls", {
@@ -7,6 +11,7 @@ describe('homepage', () => {
           body: response
         })
       })
+
     cy.fixture("mockUrls.json")
       .then((response) => {
         cy.intercept("http://localhost:3001/api/v1/urls", {
@@ -14,6 +19,7 @@ describe('homepage', () => {
           body: response
         })
       })
+      
     cy.visit('http://localhost:3000/rocket-docket/')
   })
 
@@ -65,7 +71,7 @@ describe('homepage', () => {
         cy.get('.form-long-url').type('mockpost.com/mockitup')
         cy.get('.form-button').click()
       })
-      
+
       .get('.url').should('have.length', 3)
       .get('.url').eq(2).within(() => {
         cy.get('.url-title').should('have.text', 'mock post')
@@ -73,5 +79,22 @@ describe('homepage', () => {
         cy.get('.long-url').should('have.text', 'mockpost.com/mockitup')
 
       })
+  })
+
+  it('should allow DELETE calls from the url cards, and update the DOM accordingly', () => {
+    cy.visit('http://localhost:3000/')
+    cy
+      .get('.url-form').within(() => {
+        cy.get('.form-title').type('mock post')
+        cy.get('.form-long-url').type('mockpost.com/mockitup')
+        cy.get('.form-button').click()
+      })
+      
+      .get('.url').should('have.length', 3)
+      .get('.url').eq(2).within(() => {
+        cy.get('.delete-button').click()
+
+      })
+      .get('.url').should('have.length', 2)
   })
 })

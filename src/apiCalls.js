@@ -27,5 +27,6 @@ export const deleteUrl = id => {
 
   return fetch(`http://localhost:3001/api/v1/urls/${id}`, requestOptions)
     .then(response => response)
+    .then(response => response)
     .catch(error => console.log('error', error));
 }
