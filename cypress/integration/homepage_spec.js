@@ -65,9 +65,9 @@ describe('homepage', () => {
         cy.get('.form-long-url').type('mockpost.com/mockitup')
         cy.get('.form-button').click()
       })
+      
       .get('.url').should('have.length', 3)
       .get('.url').eq(2).within(() => {
-        
         cy.get('.url-title').should('have.text', 'mock post')
         cy.get('.short-url').should('have.attr', 'href', 'http://localhost:3001/useshorturl/4')
         cy.get('.long-url').should('have.text', 'mockpost.com/mockitup')
