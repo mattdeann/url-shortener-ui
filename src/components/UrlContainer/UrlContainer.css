@@ -5,3 +5,8 @@
   padding: 5px;
   background-color: #FFF;
 }
+
+.delete-button {
+  cursor: pointer;
+  border: 1px solid black;
+}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { getUrls } from '../../apiCalls';
+import { getUrls, deleteUrl } from '../../apiCalls';
 import UrlContainer from '../UrlContainer/UrlContainer';
 import UrlForm from '../UrlForm/UrlForm';
 
@@ -25,6 +25,18 @@ export class App extends Component {
     }))
   }
 
+  removeUrlFromDOM = (id) => {
+    if (this.state.urls.length > 1) {
+      deleteUrl(id)
+      .then(
+        this.setState((prevState) => ({
+          urls: prevState.urls.filter(url => url.id !== id)
+        }))
+      )
+    }
+    
+  }
+
   render() {
     return (
       <main className="App">
@@ -33,7 +45,7 @@ export class App extends Component {
           <UrlForm pushNewUrl={this.pushNewUrl} />
         </header>
 
-        <UrlContainer urls={this.state.urls}/>
+        <UrlContainer urls={this.state.urls} removeUrlFromDOM={this.removeUrlFromDOM} />
       </main>
     );
   }

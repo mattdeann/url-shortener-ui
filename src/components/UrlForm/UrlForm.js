@@ -22,8 +22,6 @@ class UrlForm extends Component {
         this.props.pushNewUrl(response)
         this.clearInputs()
       })
-    
-      
   }
 
   clearInputs = () => {
