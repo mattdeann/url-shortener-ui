@@ -19,12 +19,18 @@ export class App extends Component {
       )
   }
 
+  pushNewUrl = (urlObject) => {
+    this.setState((prevState) => ({
+      urls: [...prevState.urls, urlObject]
+    }))
+  }
+
   render() {
     return (
       <main className="App">
         <header>
           <h1>URL Shortener</h1>
-          <UrlForm />
+          <UrlForm pushNewUrl={this.pushNewUrl} />
         </header>
 
         <UrlContainer urls={this.state.urls}/>
